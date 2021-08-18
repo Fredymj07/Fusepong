@@ -1,0 +1,24 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load bootstrap %}
+
+{% block content %}
+        <div class="container">
+            <div class="card-header">
+                <h4><b>Datos de la Compañía</b></h4>
+            </div>
+            <div class="card-body">
+                <form action="{% url 'core:AddClient' %}" method="POST">
+                    {{ clientForm|bootstrap }}
+                    <div class="form-group">
+                    <button type="submit" class="btn btn-primary mt-3">Enviar</button>
+                    </div>
+                    {% csrf_token %}
+                </form>
+            </div>
+        </div>
+
+    <div class="container-sm">
+        <a class="btn btn-primary float-right" href="{% url 'core:index' %}">Regresar</a>
+    </div>
+{% endblock content %}
