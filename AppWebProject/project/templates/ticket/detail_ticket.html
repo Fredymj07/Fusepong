@@ -1,0 +1,48 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container">
+        <div class="card-header">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">Historia de Usuario</li>
+                <li class="breadcrumb-item active">{{detailTicket.user_story}}</li>
+            </ol>
+        </div>
+        <div class="card-body">
+            <h3 class="card-title">{{detailTicket.title}}</h3>
+            <p class="card-text">{{detailTicket.description}}</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <h5>Historial de Comentarios</h5>
+        <div  class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-responsive-sm">
+                        <thead>
+                            <tr>
+                                <th>Descripción</th>
+                                <th>Ticket Asociado</th>
+                                <th>Creado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for comment in comment_list %}
+                            <tr>
+                                <th>{{comment.description}}</th>
+                                <th>{{comment.ticket}}</th>
+                                <th>{{comment.created}}</th>
+                            </tr>
+                        </tbody>
+                        {% endfor %} 
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="container-sm mt-2 float-left">
+            <a class="btn btn-primary" href="{% url 'project:Tickets' %}">Regresar</a>
+        </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,15 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load bootstrap %}
+
+{% block content %}
+    <div class="container">
+        <form action="{% url 'project:AddComment' %}" method="POST">
+            <div class="form-floating">
+                {{commentForm|bootstrap}}
+                <button class="btn btn-primary mt-2">Guardar</button>
+            </div>
+            {% csrf_token %}
+        </form>
+    </div>
+{% endblock content %}

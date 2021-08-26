@@ -112,15 +112,16 @@
                     </li>
                     <!-- Compañías -->
                     <li>
-                        <a href="{% url 'core:ClientList' %}" aria-expanded="false">
+                        <a href="{% url 'core:Clients' %}" aria-expanded="false">
                         <i class="icon icon-world-2"></i><span class="nav-text">Compañías</span></a>
                     </li>
                     <!-- Proyectos -->
-                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                    <li><a class="has-arrow" aria-expanded="false">
                             <i class="icon icon-app-store"></i><span class="nav-text">Proyectos</span></a>
                         <ul aria-expanded="false">
-                            <li><a href="./app-profile.html">Profile</a></li>
-                            <li><a href="./app-calender.html">Calendar</a></li>
+                            <li><a href="{% url 'project:Projects' %}">Proyectos</a></li>
+                            <li><a href="{% url 'project:Stories' %}">Historias de Usuario</a></li>
+                            <li><a href="{% url 'project:Tickets' %}">Tickets</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -166,5 +167,21 @@
     <script src="{% static 'js/vendor/jqvmap/js/jquery.vmap.usa.js' %}"></script>
     <script src="{% static 'js/vendor/jquery.counterup/jquery.counterup.min.js' %}"></script>
     <script src="{% static 'js/dashboard/dashboard-1.js' %}"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    {% if messages %}
+        {% for m in messages %}
+            <script>
+                Swal.fire({
+                    "title": "Felicitaciones",
+                    "text": "{{m}}",
+                    "icon": "success"
+                })
+            </script>
+        {% endfor %}
+    {% endif %}
+
+    {% block extrajs %}
+    {% endblock extrajs %}
 </body>
 </html>

@@ -1,0 +1,105 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="row page-titles mx-0">
+        <div class="col-sm-6 p-md-0">
+            <div class="welcome-text">
+                <h4>Bienvenido!</h4>
+                <p class="mb-0">Tickets de Desarrollo</p>
+            </div>
+        </div>
+        <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+            <ol class="breadcrumb">
+                <a class="btn btn-primary" href="{% url 'project:AddTicket' %}">Crear Ticket</a>
+            </ol>
+        </div>
+    </div>
+
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Tickets</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-responsive-sm">
+                        <thead>
+                            <tr>
+                                <th>Título</th>
+                                <th>Historia de Usuario</th>
+                                <th>Estado</th>
+                                <th>Prioridad</th>
+                                <th>Creado</th>
+                                <th>Actualización</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for ticket in ticket_list %}
+                            <tr>
+                                <th>{{ticket.title}}</th>
+                                <th>{{ticket.user_story}}</th>
+                                <th>{{ticket.status}}</th>
+                                <th>{{ticket.priority}}</th>
+                                <th>{{ticket.created}}</th>
+                                <th>{{ticket.updated}}</th>
+                                <th>
+                                    <a href="#" onclick="cancelTicket({{ticket.id}})">
+                                        <abbr title="Cancelar Ticket">
+                                            <img src="{% static 'images/cancel.svg' %}" id="cancel_ticket" width="25" heidth="25">
+                                        </abbr>
+                                    </a>
+                                </th>
+                                <th>
+                                    <a href="{% url 'project:DetailTicket' ticket.id %}">
+                                        <abbr title="Detalle del Ticket">
+                                            <img src="{% static 'images/detail.svg' %}" width="25" heidth="25">
+                                        </abbr>
+                                    </a>
+                                </th>
+                                <th>
+                                    <a href="{% url 'project:AddComment' %}">
+                                        <abbr title="Añadir comentarios">
+                                            <img src="{% static 'images/comments.svg' %}" width="25" heidth="25">
+                                        </abbr>
+                                    </a>
+                                </th>
+                            </tr>
+                        </tbody>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-sm mt-2 float-left">
+        <a class="btn btn-primary" href="{% url 'project:Stories' %}">Regresar</a>
+    </div>
+{% endblock content %}
+
+{% block extrajs %}
+    <script>
+        function cancelTicket(id) {
+            Swal.fire({
+                "title": "¿Está seguro de cancelar el Ticket?",
+                "text": "Esta acción no podrá modificarse",
+                "icon": "question",
+                "showCancelButton": true,
+                "cancelButtonText": "Cancelar",
+                "confirmButtonText": "Confimar",
+                "reverseButtons": true,
+                "confirmButtonColor": "#4425cb",
+                "cancelButtonColor": "#673BB7"
+            })
+            .then(function(result) {
+                if(result.isConfirmed) {
+                    window.location.href = "/project/CancelTicket/"+id
+                }
+            })
+        }
+    </script>
+{% endblock extrajs %}

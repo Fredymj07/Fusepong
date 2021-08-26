@@ -1,0 +1,54 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="row page-titles mx-0">
+        <div class="col-sm-6 p-md-0">
+            <div class="welcome-text">
+                <h4>Bienvenido!</h4>
+                <p class="mb-0">Historias de Usuario</p>
+            </div>
+        </div>
+        <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+            <ol class="breadcrumb">
+                <a class="btn btn-primary" href="{% url 'project:AddStory' %}">Crear Historia</a>
+            </ol>
+        </div>
+    </div>
+
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Historias</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-responsive-sm">
+                        <thead>
+                            <tr>
+                                <th>Título</th>
+                                <th>Descripción</th>
+                                <th>Proyecto</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for story in story_list %}
+                            <tr>
+                                <th>{{story.title}}</th>
+                                <th>{{story.description}}</th>
+                                <th>{{story.project}}</th>
+                                <th><a href="{% url 'project:Tickets' %}"><img src="{% static 'images/tasks-solid.svg' %}" width="27" height="27"> Tickets</a></th>
+                            </tr>
+                        </tbody>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-sm mt-2 float-left">
+        <a class="btn btn-primary" href="{% url 'project:Projects' %}">Regresar</a>
+    </div>
+{% endblock content %}
