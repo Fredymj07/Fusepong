@@ -1,0 +1,35 @@
+{% extends 'base_login.html' %}
+{% load static %}
+{% load bootstrap %}
+
+{% block content %}
+    <div class="authincation h-100">
+        <div class="container-fluid h-100">
+            <div class="row justify-content-center h-100 align-items-center">
+                <div class="col-md-6">
+                    <div class="authincation-content">
+                        <div class="row no-gutters">
+                            <div class="col-xl-12">
+                                <div class="auth-form">
+                                    <h4 class="text-center mb-4">Registra tu cuenta</h4>
+                                    <form method="post" action="{% url 'account:UserRegister' %}">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            {{userRegisterForm|bootstrap}}
+                                        </div>
+                                        <div class="text-center mt-4">
+                                            <button type="submit" class="btn btn-primary btn-block">Registrarme</button>
+                                        </div>
+                                    </form>
+                                    <div class="new-account mt-3">
+                                        <p>Ya tienes una cuenta? <a class="text-primary" href="{% url 'login' %}">Iniciar sesión</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

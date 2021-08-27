@@ -10,8 +10,9 @@
             </ol>
         </div>
         <div class="card-body">
-            <h3 class="card-title">{{detailTicket.title}}</h3>
+            <h3 class="card-title">{{detailTicket.title}} -> Estado <span id="status" class="breadcrumb-item active">{{detailTicket.status}}</span></h3>
             <p class="card-text">{{detailTicket.description}}</p>
+            <a id="btn-update" href="{% url 'project:UpdateTicket' detailTicket.id %}" class="btn btn-primary float-right">Modificar</a>
         </div>
     </div>
 
@@ -46,3 +47,12 @@
         </div>
     </div>
 {% endblock content %}
+
+{% block extrajs %}
+    <script>
+        var status = document.getElementById("status").innerHTML;
+        if (status === "Cancelado") {
+            document.getElementById("btn-update").style.display = "none";
+        }
+    </script>
+{% endblock extrajs %}

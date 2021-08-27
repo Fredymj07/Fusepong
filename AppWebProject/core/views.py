@@ -16,11 +16,12 @@ def index(request):
 #     print(client_list)
 #     return render(request, 'core/index.html', {'client_list':client_list})
 
+@login_required
 def ClientList(request):
     client_list = Client.objects.order_by('id')
     return render(request, 'client/client_list.html', {'client_list':client_list})
 
-# @login_required
+@login_required
 def AddClient(request):
     if request.method=='POST':
         clientForm = AddClientForm(request.POST)

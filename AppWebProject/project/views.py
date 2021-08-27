@@ -1,14 +1,17 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Project, UserStory, Ticket, Status, Comment
-from .forms import AddProjectForm, AddStoryForm, AddTicketForm, AddCommentForm
+from .forms import AddProjectForm, AddStoryForm, AddTicketForm, AddCommentForm, UpdateTicketForm
 
 # Create your views here.
+@login_required
 def ProjectList(request):
     project_list = Project.objects.order_by('id')
     return render(request, 'project/project_list.html', {'project_list':project_list})
 
+@login_required
 def AddProject(request):
     if request.method=='POST':
         projectForm = AddProjectForm(request.POST)
@@ -24,10 +27,12 @@ def AddProject(request):
         projectForm = AddProjectForm()
     return render(request, 'project/add_project.html', {'projectForm': projectForm})
 
+@login_required
 def UserStoryList(request):
     story_list = UserStory.objects.order_by('id')
     return render(request, 'userstory/story_list.html', {'story_list':story_list})
 
+@login_required
 def AddUserStory(request):
     if request.method=='POST':
         storyForm = AddStoryForm(request.POST, request.FILES)
@@ -43,10 +48,12 @@ def AddUserStory(request):
         storyForm = AddStoryForm()
     return render(request, 'userstory/add_story.html', {'storyForm': storyForm})
 
+@login_required
 def TicketList(request):
     ticket_list = Ticket.objects.order_by('id')
     return render(request, 'ticket/ticket_list.html', {'ticket_list':ticket_list})
 
+@login_required
 def AddTicket(request):
     if request.method=='POST':
         ticketForm = AddTicketForm(request.POST, request.FILES)
@@ -64,14 +71,7 @@ def AddTicket(request):
         ticketForm = AddTicketForm()
     return render(request, 'ticket/add_ticket.html', {'ticketForm':ticketForm})
 
-def CancelTicket(request, id):
-    cancelTicket = get_object_or_404(Ticket, pk=id)
-    if cancelTicket:
-        cancelTicket.status = Status.objects.get(id=4)
-        cancelTicket.save()
-        messages.success(request, 'Ticket cancelado correctamente')
-    return redirect('project:Tickets')
-
+@login_required
 def DetailTicket(request, id):
     detailTicket = get_object_or_404(Ticket, pk=id)
     try:
@@ -80,6 +80,32 @@ def DetailTicket(request, id):
         messages.info(request, 'No existen comentarios para el ticket seleccionado.')
     return render(request, 'ticket/detail_ticket.html', {'detailTicket':detailTicket, 'comment_list':comment_list})
 
+@login_required
+def UpdateTicket(request, id):
+    instance = get_object_or_404(Ticket, pk=id)
+    if instance.status == '4':
+        messages.warning(request, 'El registro seleccionado no puede modificarse debido a su estado actual.')
+    else:
+        if request.method=='POST':
+            updateTicketForm = UpdateTicketForm(request.POST, instance=instance)
+            if updateTicketForm.is_valid():
+                updateTicketForm.save()
+                messages.success(request, 'Datos del ticket modificados correctamente.')
+            return redirect('project:Tickets')
+        else:
+            updateTicketForm = UpdateTicketForm(instance=instance)
+        return render(request, 'ticket/update_ticket.html', {'updateTicketForm':updateTicketForm, 'instance':instance})
+
+@login_required
+def CancelTicket(request, id):
+    cancelTicket = get_object_or_404(Ticket, pk=id)
+    if cancelTicket:
+        cancelTicket.status = Status.objects.get(id=4)
+        cancelTicket.save()
+        messages.success(request, 'Ticket cancelado correctamente')
+    return redirect('project:Tickets')
+
+@login_required
 def AddComment(request):
     if request.method=='POST':
         commentForm = AddCommentForm(request.POST)
