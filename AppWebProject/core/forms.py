@@ -9,4 +9,4 @@ class AddClientForm(forms.Form):
     document_type = forms.ModelChoiceField(label='Tipo de Documento', queryset=DocumentType.objects.all(), required=True)
     document_number = forms.CharField(label='Número de Documento', min_length=6, max_length=14, required=True)
     phone = forms.CharField(label='Teléfono', min_length=7, max_length=10, required=True)
-    email = forms.CharField(label='Correo', validators=[EmailValidator(message='Correo inválido', whitelist='mail, gmail, outlook, hotmail, yahoo')], required=True)
+    email = forms.CharField(label='Correo', required=True)
